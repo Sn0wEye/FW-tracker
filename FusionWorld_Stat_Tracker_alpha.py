@@ -261,3 +261,29 @@ with col3:
         st.write(f"Winrate: {winrate:.1f}%")
     else:
         st.write("Noch keine Daten für dieses Matchup vorhanden")
+# -------------------------
+# 🔒 JSON Backup (Passwort-geschützt)
+# -------------------------
+st.subheader("Matches JSON Backup")
+
+# Passwort aus st.secrets ziehen
+# In .streamlit/secrets.toml musst du z.B. haben:
+# download_password = "meinSuperGeheimesPasswort"
+DOWNLOAD_PASSWORD = st.secrets["download_password"]
+
+# Passwortfeld
+password_input = st.text_input(
+    "Passwort eingeben, um JSON herunterzuladen:", 
+    type="password"
+)
+
+# Prüfen
+if password_input == DOWNLOAD_PASSWORD:
+    st.download_button(
+        label="Matches als JSON herunterladen",
+        data=json.dumps(matches, indent=4),
+        file_name="matches_backup.json",
+        mime="application/json"
+    )
+elif password_input:
+    st.warning("Falsches Passwort! 🔒")
